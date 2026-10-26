@@ -1,0 +1,128 @@
+.info-page {
+	max-width: 1020px;
+	margin: 0 auto;
+	padding: 12px 0 52px;
+}
+.info-page h2 {
+	font-size: clamp(30px, 4vw, 46px);
+	margin: 12px 0 14px;
+	color: #1c4834;
+}
+.info-page .lead {
+	font-size: 18px;
+	line-height: 1.7;
+	color: #5b6e61;
+	max-width: 760px;
+	margin-bottom: 32px;
+}
+.info-page h3 {
+	color: #234d37;
+}
+.info-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 18px;
+}
+.info-grid article,
+.faq-list details,
+.contact-layout > div,
+.contact-aside,
+.info-callout {
+	background: #fff;
+	border: 1px solid #e1e9e2;
+	border-radius: 12px;
+	padding: 24px;
+}
+.info-grid p,
+.info-callout p,
+.contact-aside p {
+	line-height: 1.7;
+	color: #53665a;
+}
+.info-callout {
+	margin-top: 28px;
+	background: #edf5e9;
+}
+.info-callout button {
+	border: 0;
+	background: #21533e;
+	color: white;
+	border-radius: 7px;
+	padding: 12px 18px;
+}
+.help-search {
+	display: block;
+	max-width: 530px;
+	font-weight: 600;
+	margin: 24px 0;
+}
+.help-search input,
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+	display: block;
+	width: 100%;
+	margin-top: 8px;
+	padding: 12px;
+	border: 1px solid #cdd9cf;
+	border-radius: 7px;
+	background: white;
+	color: #20332b;
+}
+.faq-list {
+	display: grid;
+	gap: 12px;
+}
+.faq-list details {
+	padding: 17px 22px;
+}
+.faq-list summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+.faq-list p {
+	line-height: 1.7;
+	color: #53665a;
+}
+.contact-layout {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) minmax(230px, 1fr);
+	gap: 20px;
+}
+.contact-form {
+	display: grid;
+	gap: 18px;
+}
+.contact-form label {
+	display: block;
+	font-weight: 600;
+}
+.contact-form .form-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+.contact-form textarea {
+	resize: vertical;
+}
+.contact-form .save {
+	justify-self: start;
+}
+.form-status {
+	color: #21533e;
+}
+@media (max-width: 760px) {
+	.info-grid,
+	.contact-layout,
+	.contact-form .form-grid {
+		grid-template-columns: 1fr;
+	}
+	.info-page {
+		padding-top: 6px;
+	}
+	.info-grid article,
+	.contact-layout > div,
+	.contact-aside {
+		padding: 18px;
+	}
+}

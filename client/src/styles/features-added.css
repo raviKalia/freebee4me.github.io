@@ -1,0 +1,92 @@
+.action-row {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+.donation-row,
+.request-card {
+	border: 1px solid #dce5dc;
+	border-radius: 12px;
+	padding: 16px;
+	margin: 12px 0;
+	background: #fff;
+}
+.donation-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+}
+.donation-row button,
+.request-card button,
+.admin-tabs button,
+.item-body button {
+	padding: 9px 15px;
+	border: 1px solid #537b62;
+	border-radius: 8px;
+	background: #f0f7f1;
+	color: #1b4931;
+}
+.mini-photo {
+	width: 64px;
+	height: 64px;
+	object-fit: cover;
+	float: left;
+	margin-right: 12px;
+	border-radius: 8px;
+}
+.editor {
+	max-width: 680px;
+	margin: 24px auto;
+	padding: 20px;
+	background: white;
+	border: 1px solid #dce5dc;
+	border-radius: 12px;
+}
+.photo-strip {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+.photo-strip img {
+	width: 90px;
+	height: 90px;
+	object-fit: cover;
+}
+.photo-strip > div {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.admin-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 20px 0;
+}
+.admin-tabs button[aria-current='page'] {
+	background: #245b3d;
+	color: white;
+}
+.admin-card label {
+	display: block;
+	margin: 12px 0;
+}
+.admin-card input {
+	display: block;
+	max-width: 450px;
+	width: 100%;
+	padding: 10px;
+	margin-top: 5px;
+}
+.item-body button {
+	display: block;
+	margin-top: 12px;
+}
+@media (max-width: 560px) {
+	.donation-row {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}

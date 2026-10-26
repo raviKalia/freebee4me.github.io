@@ -1,0 +1,77 @@
+/* Loaded after modern.css so the navigation responds consistently. */
+
+/* Header */
+.header {
+	position: relative;
+}
+
+/* Accessibility widget */
+.header nav .accessibility-widget {
+	margin-left: 4px;
+}
+
+.header nav .accessibility-trigger {
+	white-space: nowrap;
+	background: #fff;
+	color: #204934;
+}
+
+/* Mobile layout */
+@media (max-width: 760px) {
+	.header {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	/* Mobile menu button */
+	.mobile-menu {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: auto;
+		min-width: 44px;
+		min-height: 44px;
+	}
+
+	/* Collapsible navigation */
+	.header nav {
+		display: none;
+		flex-basis: 100%;
+		width: 100%;
+		margin: 0;
+		padding: 12px 0;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 6px;
+		overflow: visible;
+	}
+
+	.header nav.nav-open {
+		display: flex;
+	}
+
+	.header nav > button {
+		text-align: left;
+		width: 100%;
+		min-height: 44px;
+	}
+
+	/* Accessibility controls */
+	.header nav .accessibility-widget {
+		margin: 0;
+		width: 100%;
+	}
+
+	.header nav .accessibility-trigger {
+		width: 100%;
+		text-align: left;
+		min-height: 44px;
+	}
+
+	.header nav .accessibility-panel {
+		position: static;
+		width: 100%;
+		max-height: none;
+		margin-top: 8px;
+	}
+}

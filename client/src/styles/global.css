@@ -1,0 +1,71 @@
+:root {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #20332b;
+	background: #f8faf7;
+}
+* {
+	box-sizing: border-box;
+}
+body {
+	margin: 0;
+}
+button,
+input,
+select {
+	font: inherit;
+}
+button {
+	cursor: pointer;
+}
+footer {
+	border-top: 1px solid #e3eae5;
+	padding: 24px;
+	text-align: center;
+	color: #7d8980;
+}
+@media (max-width: 760px) {
+	.hero-inner {
+		padding: 48px 20px;
+	}
+	.header {
+		padding: 16px;
+	}
+	.logo {
+		font-size: 20px;
+	}
+	nav {
+		gap: 2px;
+	}
+	nav button {
+		font-size: 13px;
+	}
+	.hero-search {
+		flex-direction: column;
+	}
+	.hero-search button {
+		width: 100%;
+	}
+	.section-title {
+		display: block;
+	}
+	.items {
+		grid-template-columns: 1fr 1fr;
+	}
+	.profile {
+		grid-template-columns: 1fr;
+	}
+	.form-grid {
+		grid-template-columns: 1fr;
+	}
+}
+@media (max-width: 480px) {
+	.items {
+		grid-template-columns: 1fr;
+	}
+	.filters label {
+		min-width: 100%;
+	}
+	.locate {
+		width: 100%;
+	}
+}

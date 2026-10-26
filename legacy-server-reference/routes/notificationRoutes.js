@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { demoAuth } from '../middleware/demoAuth.js';
+import { listNotifications, readNotification, getPreferences, savePreferences } from '../controllers/notificationController.js';
+const router = Router();
+router.use(demoAuth);
+router.get('/notifications', listNotifications);
+router.patch('/notifications/:id/read', readNotification);
+router.get('/notification-preferences', getPreferences);
+router.put('/notification-preferences', savePreferences);
+export default router;

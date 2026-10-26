@@ -1,0 +1,330 @@
+/* Shared styling: soft surfaces, accessible contrast and responsive layout. */
+
+/* Authentication layout */
+.auth-layout {
+	display: grid;
+	grid-template-columns: minmax(260px, 0.95fr) minmax(310px, 1fr);
+	gap: clamp(1rem, 4vw, 3rem);
+	max-width: 1040px;
+	margin: 3rem auto;
+	padding: 1rem;
+	align-items: stretch;
+}
+
+/* Authentication introduction */
+.auth-intro {
+	background: linear-gradient(140deg, #143f40, #146c66 65%, #249d8e);
+	color: #fff;
+	border-radius: 26px;
+	padding: clamp(1.6rem, 4vw, 3rem);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-shadow: 0 20px 40px #143f4024;
+}
+
+.auth-intro h2 {
+	font-size: clamp(1.8rem, 3vw, 3rem);
+	line-height: 1.14;
+	color: white;
+	margin: 0.8rem 0;
+}
+
+.auth-intro p {
+	color: #e2f8f1;
+}
+
+.auth-benefits {
+	display: grid;
+	gap: 1rem;
+	margin-top: 2rem;
+	font-weight: 600;
+}
+
+/* Authentication form panel */
+.auth-panel {
+	margin: 0 !important;
+	max-width: none !important;
+	border-radius: 26px !important;
+	box-shadow: 0 16px 38px #0b423016;
+}
+
+/* Password input and visibility toggle */
+.password-field {
+	display: flex;
+	align-items: center;
+	border: 1px solid #b4c9c5;
+	border-radius: 10px;
+	overflow: hidden;
+	background: white;
+}
+
+.password-field input {
+	border: 0 !important;
+	flex: 1;
+	min-width: 0;
+}
+
+.password-toggle {
+	background: transparent !important;
+	color: #146c66 !important;
+	padding: 0.7rem !important;
+	box-shadow: none !important;
+}
+
+/* Request, donation and admin cards */
+.request-card,
+.donation-row,
+.admin-card,
+.request-chat {
+	border: 1px solid #dbe9e4;
+	border-radius: 16px;
+	padding: 1.1rem;
+	margin: 1rem 0;
+	background: #fff;
+	box-shadow: 0 6px 20px #143f4010;
+}
+
+/* Request chat */
+.request-chat {
+	background: #f4faf8;
+}
+
+.chat-messages {
+	max-height: 240px;
+	overflow: auto;
+	display: grid;
+	gap: 0.35rem;
+	padding: 0.5rem 0;
+}
+
+.chat-messages p {
+	padding: 0.6rem 0.8rem;
+	border-radius: 12px;
+	max-width: 85%;
+	margin: 0;
+	background: white;
+}
+
+.chat-messages .chat-own {
+	justify-self: end;
+	background: #d8f4e9;
+}
+
+/* Chat message composer */
+.chat-send {
+	display: flex;
+	gap: 0.5rem;
+}
+
+.chat-send input {
+	flex: 1;
+	min-width: 0;
+}
+
+.privacy-note {
+	font-size: 0.9rem;
+	color: #526e68;
+}
+
+/* Button hover effects */
+.feature-panel button,
+.request-chat button {
+	transition:
+		transform 0.15s ease,
+		box-shadow 0.15s ease;
+}
+
+.feature-panel button:hover:not(:disabled),
+.request-chat button:hover:not(:disabled) {
+	transform: translateY(-1px);
+}
+
+/* Clearly distinguish cancellation from positive exchange actions. */
+.cancel-request {
+	background: #fff1f2;
+	color: #9f1239;
+	border: 1px solid #fda4af;
+}
+
+.cancel-request:hover {
+	background: #ffe4e6;
+}
+
+/* Compact header navigation */
+.header nav {
+	align-items: center;
+	gap: 0.35rem;
+	flex-wrap: wrap;
+}
+
+.header nav > button,
+.nav-more > button {
+	border-radius: 10px;
+	padding: 0.7rem 0.85rem;
+}
+
+/* Secondary More menu */
+.nav-more {
+	position: relative;
+}
+
+.nav-more-menu {
+	position: absolute;
+	right: 0;
+	top: calc(100% + 6px);
+	z-index: 40;
+	min-width: 180px;
+	display: grid;
+	gap: 3px;
+	background: white;
+	border: 1px solid #d6e7e0;
+	border-radius: 14px;
+	padding: 8px;
+	box-shadow: 0 14px 35px #143f4025;
+}
+
+.nav-more-menu button {
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	text-align: left;
+	padding: 11px 13px;
+	color: #194c43;
+	cursor: pointer;
+}
+
+.nav-more-menu button:hover {
+	background: #e8f6f0;
+}
+
+/* Admin member list */
+.admin-member-grid {
+	display: grid;
+	gap: 12px;
+}
+
+.admin-member {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	background: white;
+	border: 1px solid #dceae4;
+	border-radius: 15px;
+	padding: 16px;
+}
+
+.admin-member p {
+	margin: 5px 0;
+	color: #56726a;
+	font-size: 0.9rem;
+}
+
+.admin-member .action-row {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.admin-member button {
+	border-radius: 9px;
+	padding: 9px 12px;
+	cursor: pointer;
+}
+
+/* Support conversation cards */
+.support-ticket,
+.my-contact-messages .support-ticket {
+	background: var(--surface, #fff);
+	border: 1px solid #cbdedb;
+	border-radius: 16px;
+	padding: 18px;
+	margin: 14px 0;
+	box-shadow: 0 8px 22px rgba(15, 74, 70, 0.06);
+}
+
+.my-contact-messages {
+	margin-top: 32px;
+}
+
+/* Support replies */
+.support-replies {
+	margin: 12px 0;
+	padding: 12px;
+	border-left: 3px solid #18a79c;
+	background: #eefaf8;
+	border-radius: 8px;
+	color: #163f3b;
+}
+
+.support-replies p {
+	margin: 6px 0;
+	white-space: pre-wrap;
+}
+
+/* Support reply composer */
+.support-reply-label {
+	display: block;
+	margin: 12px 0;
+	font-weight: 600;
+}
+
+.support-reply-label textarea {
+	display: block;
+	width: 100%;
+	margin-top: 8px;
+	border: 1px solid #9abbb7;
+	border-radius: 10px;
+	padding: 12px;
+	font: inherit;
+	resize: vertical;
+}
+
+/* Mobile authentication and chat */
+@media (max-width: 720px) {
+	.auth-layout {
+		grid-template-columns: 1fr;
+		margin: 1rem auto;
+	}
+
+	.auth-intro {
+		padding: 1.6rem;
+	}
+
+	.auth-benefits {
+		margin-top: 1rem;
+	}
+
+	.chat-send {
+		flex-wrap: wrap;
+	}
+}
+
+/* Mobile navigation and admin members */
+@media (max-width: 760px) {
+	.header nav {
+		align-items: stretch;
+	}
+
+	.nav-more {
+		width: 100%;
+	}
+
+	.nav-more > button {
+		width: 100%;
+		text-align: left;
+		min-height: 44px;
+	}
+
+	.nav-more-menu {
+		position: static;
+		box-shadow: none;
+		margin-top: 5px;
+	}
+
+	.admin-member {
+		align-items: stretch;
+	}
+}

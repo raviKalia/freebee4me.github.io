@@ -1,0 +1,25 @@
+import express from 'express';
+import cors from 'cors';
+import { fileURLToPath } from 'node:url';
+import itemRoutes from './routes/itemRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
+import tradeRoutes from './routes/tradeRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
+const app = express();
+const uploadsDir = fileURLToPath(new URL('./uploads/', import.meta.url));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
+app.use(express.json());
+app.use('/uploads', express.static(uploadsDir));
+app.use('/api', itemRoutes);
+app.use('/api', profileRoutes);
+app.use('/api', contactRoutes);
+app.use('/api', tradeRoutes);
+app.use('/api', notificationRoutes);
+app.use((error, _req, res, _next) => {
+  if (error.code === 'LIMIT_FILE_SIZE') return res.status(413).json({ error: 'Photo must be under 2 MB.' });
+  console.error(error);
+  res.status(500).json({ error: 'Server error.' });
+});
+const port = Number(process.env.PORT || 4000);
+app.listen(port, () => console.log(`API running on http://localhost:${port}`));

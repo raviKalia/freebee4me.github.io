@@ -1,0 +1,97 @@
+/* Header */
+header {
+	background: #fff;
+	border-bottom: 1px solid #e3eae5;
+	position: sticky;
+	top: 0;
+	right: 0;
+	z-index: 100;
+}
+
+.header {
+	max-width: 1120px;
+	margin: auto;
+	padding: 20px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 15px;
+}
+
+.donate-button {
+	border: 0;
+	background: none;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	word-wrap: break-word;
+	gap: 8px;
+}
+
+/* Logo */
+.logo {
+	font-size: 25px;
+	color: #21533e;
+	letter-spacing: -1px;
+}
+
+.logo span {
+	color: #80a45a;
+}
+
+.brand-button {
+	border: 0;
+	background: none;
+	padding: 0;
+}
+
+/* Navigation */
+nav {
+	display: flex;
+	gap: 12px;
+}
+
+nav button {
+	border: 0;
+	background: none;
+	color: #2b4a3b;
+	padding: 8px;
+}
+
+nav button[aria-current='page'] {
+	font-weight: 700;
+	color: #174f33;
+	text-decoration: underline;
+	text-underline-offset: 6px;
+}
+
+/* Footer links */
+.footer-links {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+.footer-links button {
+	border: 0;
+	background: none;
+	color: #24543d;
+}
+
+/* Mobile layout */
+@media (max-width: 760px) {
+	.header {
+		flex-wrap: wrap;
+	}
+
+	.header nav {
+		width: 100%;
+		overflow-x: auto;
+		justify-content: space-between;
+	}
+
+	nav button {
+		white-space: nowrap;
+	}
+}

@@ -1,0 +1,219 @@
+/* Accessibility settings apply across the entire website. */
+
+/* Font size */
+html[data-font-size='large'] {
+	font-size: 112.5%;
+}
+
+html[data-font-size='extra'] {
+	font-size: 125%;
+}
+
+html[data-font-size='large'] body,
+html[data-font-size='extra'] body {
+	line-height: 1.65;
+}
+
+/* High contrast: page background */
+html[data-high-contrast='true'] body,
+html[data-high-contrast='true'] main {
+	background: #000 !important;
+	color: #fff !important;
+}
+
+/* High contrast: text */
+html[data-high-contrast='true'] main *,
+html[data-high-contrast='true'] header *,
+html[data-high-contrast='true'] footer * {
+	color: #fff;
+}
+
+/* High contrast: surfaces */
+html[data-high-contrast='true'] .hero,
+html[data-high-contrast='true'] header,
+html[data-high-contrast='true'] footer,
+html[data-high-contrast='true'] main article,
+html[data-high-contrast='true'] main section,
+html[data-high-contrast='true'] .filters,
+html[data-high-contrast='true'] .profile,
+html[data-high-contrast='true'] .trade-panel,
+html[data-high-contrast='true'] .trade-chat,
+html[data-high-contrast='true'] .bubble,
+html[data-high-contrast='true'] .message {
+	background: #111 !important;
+	color: #fff !important;
+	border-color: #fff !important;
+}
+
+/* High contrast: form controls */
+html[data-high-contrast='true'] input,
+html[data-high-contrast='true'] textarea,
+html[data-high-contrast='true'] select {
+	background: #000 !important;
+	color: #fff !important;
+	border: 2px solid #fff !important;
+}
+
+/* High contrast: buttons */
+html[data-high-contrast='true'] button {
+	background: #000 !important;
+	color: #fff !important;
+	border: 2px solid #fff !important;
+}
+
+html[data-high-contrast='true'] button:disabled {
+	color: #aaa !important;
+	border-color: #aaa !important;
+}
+
+/* Link underlines */
+html[data-underline-links='true'] a {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+html[data-underline-links='false'] a {
+	text-decoration: none;
+}
+
+/* Reduced motion setting */
+html[data-reduce-motion='true'] *,
+html[data-reduce-motion='true'] *::before,
+html[data-reduce-motion='true'] *::after {
+	animation: none !important;
+	transition: none !important;
+	scroll-behavior: auto !important;
+}
+
+/* Respect the device's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* Keyboard focus */
+:focus-visible {
+	outline: 3px solid #ffbf47 !important;
+	outline-offset: 3px !important;
+}
+
+/* Skip navigation link */
+.skip-link {
+	position: fixed;
+	z-index: 9999;
+	top: -90px;
+	left: 12px;
+	background: #fff;
+	color: #111;
+	padding: 12px;
+	border: 2px solid #111;
+}
+
+.skip-link:focus {
+	top: 10px;
+}
+
+/* Accessibility widget */
+.accessibility-widget {
+	position: relative;
+}
+
+.accessibility-trigger {
+	min-height: 44px;
+	border: 2px solid currentColor;
+	border-radius: 8px;
+	padding: 8px 12px;
+	cursor: pointer;
+}
+
+/* Settings panel */
+.accessibility-panel {
+	position: absolute;
+	z-index: 100;
+	right: 0;
+	top: calc(100% + 8px);
+	width: min(350px, calc(100vw - 32px));
+	max-height: 75vh;
+	overflow: auto;
+	background: #fff;
+	color: #162e22;
+	padding: 18px;
+	border: 2px solid #2a5a41;
+	border-radius: 12px;
+	box-shadow: 0 8px 30px #0003;
+}
+
+.accessibility-panel h2 {
+	font-size: 1.1rem;
+	margin: 0;
+	color: inherit;
+}
+
+.accessibility-panel button {
+	min-height: 44px;
+	cursor: pointer;
+}
+
+/* Panel heading */
+.accessibility-panel-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8px;
+}
+
+/* Settings groups */
+.accessibility-fieldset {
+	border: 0;
+	padding: 14px 0;
+	margin: 0;
+}
+
+.accessibility-fieldset legend {
+	font-weight: 700;
+}
+
+/* Font size options */
+.accessibility-options {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.accessibility-choice {
+	padding: 6px;
+}
+
+/* Setting toggles */
+.accessibility-toggle {
+	display: flex;
+	justify-content: space-between;
+	gap: 14px;
+	align-items: center;
+	padding: 12px 0;
+	border-top: 1px solid #d4ddd5;
+	font-weight: 600;
+}
+
+.accessibility-toggle small {
+	display: block;
+	font-weight: 400;
+}
+
+.accessibility-toggle input {
+	width: 22px;
+	height: 22px;
+	flex-shrink: 0;
+}
+
+/* Mobile layout */
+@media (max-width: 760px) {
+	.accessibility-widget {
+		margin-left: auto;
+	}
+}

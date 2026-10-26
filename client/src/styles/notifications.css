@@ -1,0 +1,158 @@
+/* Notification toolbar */
+.notification-toolbar {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	margin: 18px 0;
+}
+
+/* Notification action buttons */
+.notification-toolbar button,
+.notification-list button,
+.info-page > button {
+	border: 0;
+	border-radius: 8px;
+	padding: 10px 14px;
+	background: #20573e;
+	color: white;
+	cursor: pointer;
+}
+
+/* Notification list */
+.notification-list {
+	display: grid;
+	gap: 12px;
+	margin-bottom: 24px;
+}
+
+/* Notification card */
+.notification {
+	background: white;
+	border: 1px solid #cbdccd;
+	border-left: 5px solid #226243;
+	border-radius: 10px;
+	padding: 16px;
+}
+
+.notification.read {
+	border-left-color: #bbc7bd;
+}
+
+.notification h3 {
+	margin: 0 0 8px;
+}
+
+.notification p {
+	margin: 0 0 8px;
+}
+
+.notification small {
+	display: block;
+	color: #53645a;
+	margin-bottom: 8px;
+}
+
+/* Unread indicator */
+.unread-label {
+	font-size: 0.75em;
+	color: #236b40;
+}
+
+/* Notification settings */
+.notification-settings {
+	border: 1px solid #cbdccd;
+	border-radius: 10px;
+	padding: 18px;
+	margin: 20px 0;
+}
+
+.notification-settings legend {
+	font-weight: 700;
+	padding: 0 8px;
+}
+
+.notification-settings label {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 10px 0;
+}
+
+.notification-settings input {
+	width: 22px;
+	height: 22px;
+}
+
+.notification-note {
+	font-size: 0.85em;
+	color: #57695d;
+}
+
+/* Notification bell */
+.notification-bell {
+	border: 1px solid currentColor;
+	border-radius: 8px;
+	padding: 8px 10px;
+	background: transparent;
+	cursor: pointer;
+}
+
+/* Live notification area */
+.live-notifications {
+	position: relative;
+	max-width: 1100px;
+	margin: 8px auto;
+	text-align: right;
+	padding: 0 16px;
+}
+
+.live-notifications > button {
+	background: #e8f6ef;
+	color: #165b42;
+	border: 1px solid #a7d6be;
+	border-radius: 12px;
+	padding: 9px 16px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+/* Live notification dropdown */
+.live-notification-list {
+	position: absolute;
+	right: 16px;
+	top: 45px;
+	z-index: 50;
+	text-align: left;
+	background: white;
+	border: 1px solid #cddbd3;
+	border-radius: 16px;
+	box-shadow: 0 14px 35px #10291c30;
+	width: min(390px, 90vw);
+	max-height: 430px;
+	overflow: auto;
+	padding: 16px;
+}
+
+.live-notification-list article {
+	border-bottom: 1px solid #e1e8e3;
+	padding: 10px 0;
+}
+
+.live-notification-list .unread-alert {
+	background: #f0faf4;
+}
+
+.live-notification-list button {
+	border: 1px solid #9ab9a7;
+	border-radius: 8px;
+	padding: 6px 10px;
+	background: #fff;
+	cursor: pointer;
+}
+
+/* Destructive action */
+.danger-action {
+	border: 1px solid #bf4949 !important;
+	color: #a52626 !important;
+	background: #fff5f5 !important;
+}
