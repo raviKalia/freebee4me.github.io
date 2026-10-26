@@ -1,0 +1,138 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function signedIn(){return request.auth != null;}
+  function role(){return signedIn() ? request.auth.token.get('role','user') : 'guest';}
+  function admin(){return signedIn() && (role() in ['admin','masterAdmin'] || request.auth.token.get('admin',false) == true || request.auth.token.get('masterAdmin',false) == true);}
+  function master(){return signedIn() && (role() == 'masterAdmin' || request.auth.token.get('masterAdmin',false) == true);}
+  function normal(){return signedIn() && !admin();}
+  // Admin profile fields are self-managed; role/status are never stored here.
+  match /adminProfiles/{uid} {
+   allow read: if admin() && (request.auth.uid == uid || master());
+   allow create, update: if admin() && request.auth.uid == uid
+    && request.resource.data.keys().hasOnly(['displayName','department','bio','photoUrl','updatedAt'])
+    && request.resource.data.displayName is string && request.resource.data.displayName.size() > 0 && request.resource.data.displayName.size() <= 80
+    && request.resource.data.department is string && request.resource.data.department.size() <= 80
+    && request.resource.data.bio is string && request.resource.data.bio.size() <= 500
+    && request.resource.data.photoUrl is string
+    && request.resource.data.updatedAt == request.time;
+   allow delete: if false;
+  }
+  match /profiles/{uid}{allow read,write: if normal() && request.auth.uid == uid;}
+  match /publicUsers/{uid}{
+   allow read: if admin() || (normal() && request.auth.uid == uid);
+   allow create: if normal() && request.auth.uid == uid && request.resource.data.keys().hasOnly(['displayName','email','createdAt']) && request.resource.data.get('email','') is string;
+   allow update: if normal() && request.auth.uid == uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','email']);
+   allow delete: if false;
+  }
+  match /items/{itemId}{
+   allow read: if resource.data.status == 'available' || (normal() && resource.data.ownerId == request.auth.uid) || admin();
+   allow create: if normal() && request.resource.data.ownerId == request.auth.uid && request.resource.data.status == 'available'
+    && request.resource.data.keys().hasOnly(['title','description','category','condition','city','postalCode','imageUrls','ownerId','status','createdAt']);
+   allow update: if admin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+    && request.resource.data.status in ['available','hidden']
+    || (normal() && resource.data.ownerId == request.auth.uid && request.resource.data.ownerId == resource.data.ownerId
+    && resource.data.status == 'available'
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title','description','category','condition','city','postalCode','imageUrls']))
+    || (normal() && resource.data.ownerId == request.auth.uid && resource.data.status == 'available'
+    && request.resource.data.status == 'reserved'
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','acceptedRequestId'])
+    && request.resource.data.acceptedRequestId is string
+    && getAfter(/databases/$(database)/documents/requests/$(request.resource.data.acceptedRequestId)).data.status == 'accepted'
+    && getAfter(/databases/$(database)/documents/requests/$(request.resource.data.acceptedRequestId)).data.itemId == itemId
+    && getAfter(/databases/$(database)/documents/requests/$(request.resource.data.acceptedRequestId)).data.donorId == request.auth.uid)
+    // Cancelling an accepted request must release the item in the same transaction.
+    || (normal() && resource.data.status == 'reserved'
+    && request.resource.data.status == 'available'
+    && resource.data.acceptedRequestId is string
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','acceptedRequestId'])
+    && !('acceptedRequestId' in request.resource.data)
+    && getAfter(/databases/$(database)/documents/requests/$(resource.data.acceptedRequestId)).data.status == 'cancelled'
+    && getAfter(/databases/$(database)/documents/requests/$(resource.data.acceptedRequestId)).data.itemId == itemId
+    && getAfter(/databases/$(database)/documents/requests/$(resource.data.acceptedRequestId)).data.donorId == resource.data.ownerId
+    && (getAfter(/databases/$(database)/documents/requests/$(resource.data.acceptedRequestId)).data.requesterId == request.auth.uid || resource.data.ownerId == request.auth.uid))
+    || (normal() && resource.data.ownerId == request.auth.uid && resource.data.status == 'reserved'
+    && request.resource.data.status == 'completed'
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+    && getAfter(/databases/$(database)/documents/requests/$(resource.data.acceptedRequestId)).data.status == 'completed');
+   // A donor may delete only when no exchange is in progress; existing requests must be resolved separately.
+   allow delete: if normal() && resource.data.ownerId == request.auth.uid && resource.data.status == 'available';
+  }
+  match /requests/{requestId}{
+   // Requester may check their deterministic request ID even if it does not yet exist.
+   allow get: if admin() || (normal() && requestId.matches('.*_' + request.auth.uid)) || (normal() && resource != null && (resource.data.donorId == request.auth.uid || resource.data.requesterId == request.auth.uid));
+   allow list: if admin() || (normal() && (resource.data.donorId == request.auth.uid || resource.data.requesterId == request.auth.uid));
+   allow create: if normal() && request.resource.data.requesterId == request.auth.uid
+    && request.resource.data.donorId != request.auth.uid
+    && requestId == request.resource.data.itemId + '_' + request.auth.uid
+    && request.resource.data.status == 'pending'
+    && request.resource.data.keys().hasOnly(['itemId','itemTitle','donorId','requesterId','status','message','createdAt'])
+    && request.resource.data.message is string && request.resource.data.message.size() <= 500
+    && exists(/databases/$(database)/documents/items/$(request.resource.data.itemId))
+    && get(/databases/$(database)/documents/items/$(request.resource.data.itemId)).data.ownerId == request.resource.data.donorId
+    && get(/databases/$(database)/documents/items/$(request.resource.data.itemId)).data.status == 'available';
+   allow update: if normal() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) && (
+    ((resource.data.requesterId == request.auth.uid || resource.data.donorId == request.auth.uid)
+      && resource.data.status == 'pending' && request.resource.data.status == 'cancelled')
+    || ((resource.data.requesterId == request.auth.uid || resource.data.donorId == request.auth.uid)
+      && resource.data.status == 'accepted' && request.resource.data.status == 'cancelled'
+      && getAfter(/databases/$(database)/documents/items/$(resource.data.itemId)).data.status == 'available'
+      && !('acceptedRequestId' in getAfter(/databases/$(database)/documents/items/$(resource.data.itemId)).data))
+    || (resource.data.donorId == request.auth.uid && resource.data.status == 'pending' && request.resource.data.status == 'rejected')
+    || (resource.data.donorId == request.auth.uid && resource.data.status == 'pending' && request.resource.data.status == 'accepted'
+      && getAfter(/databases/$(database)/documents/items/$(resource.data.itemId)).data.status == 'reserved'
+      && getAfter(/databases/$(database)/documents/items/$(resource.data.itemId)).data.acceptedRequestId == requestId)
+    || (resource.data.donorId == request.auth.uid && resource.data.status == 'accepted' && request.resource.data.status == 'completed'
+      && getAfter(/databases/$(database)/documents/items/$(resource.data.itemId)).data.status == 'completed'));
+   allow delete: if false;
+  }
+  // Private chat: only the donor and requester, after acceptance, until completion.
+  match /requests/{requestId}/messages/{messageId} {
+   function parentRequest(){return get(/databases/$(database)/documents/requests/$(requestId)).data;}
+   function participant(){return normal() && (parentRequest().donorId == request.auth.uid || parentRequest().requesterId == request.auth.uid);}
+   allow read: if participant() && parentRequest().status == 'accepted';
+   allow create: if participant() && parentRequest().status == 'accepted'
+    && request.resource.data.keys().hasOnly(['senderId','text','createdAt'])
+    && request.resource.data.senderId == request.auth.uid
+    && request.resource.data.text is string
+    && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 1000
+    && request.resource.data.createdAt == request.time;
+   allow update,delete: if false;
+  }
+  // Contact requests are readable only by administrators.
+  match /contactMessages/{messageId} {
+   allow create: if request.resource.data.keys().hasOnly(['name','email','subject','message','createdAt','userId'])
+    && request.resource.data.name is string && request.resource.data.name.size() >= 1 && request.resource.data.name.size() <= 100
+    && request.resource.data.email is string && request.resource.data.email.size() >= 3 && request.resource.data.email.size() <= 254
+    && request.resource.data.subject is string && request.resource.data.subject.size() <= 100
+    && request.resource.data.message is string && request.resource.data.message.size() >= 10 && request.resource.data.message.size() <= 2000
+    && request.resource.data.createdAt == request.time
+    && request.resource.data.userId == (signedIn() ? request.auth.uid : 'guest');
+   allow read: if admin() || (signedIn() && resource.data.userId == request.auth.uid);
+   allow update,delete: if false;
+  }
+  // Only administrators can reply. Users can read replies to their own ticket.
+  match /contactMessages/{messageId}/replies/{replyId} {
+   function ticket(){return get(/databases/$(database)/documents/contactMessages/$(messageId)).data;}
+   allow read: if admin() || (signedIn() && ticket().userId == request.auth.uid);
+   allow create: if admin()
+    && request.resource.data.keys().hasOnly(['text','createdAt'])
+    && request.resource.data.text is string
+    && request.resource.data.text.size() > 0
+    && request.resource.data.text.size() <= 2000
+    && request.resource.data.createdAt == request.time;
+   allow update,delete: if false;
+  }
+
+  // Each user can read and mark only their own notifications as read.
+  // Notification creation is server-only (Cloud Functions Admin SDK).
+  match /notifications/{notificationId} {
+   allow get,list: if signedIn() && resource.data.userId == request.auth.uid;
+   allow update: if signedIn() && resource.data.userId == request.auth.uid
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read'])
+    && request.resource.data.read == true;
+   allow create,delete: if false;
+  }
+
+ }
+}
