@@ -8,3 +8,4 @@ serviceAccountKey.json
 *.log
 firestore.rules
 storage.rules
+.gitignore
